@@ -1,0 +1,14 @@
+[MASTER]
+# Ignore CDK generated files
+ignore=cdk.out,.venv
+
+[MESSAGES CONTROL]
+# Disable specific warnings that are acceptable in this context:
+# - R0913/R0917: Too many arguments - acceptable for CDK constructs with many optional parameters
+# - W0718: Catching broad Exception - standard practice in Lambda handlers for resilience
+# - W0613: Unused argument 'context' - Lambda signature requires context parameter
+disable=R0913,R0917,W0718,W0613
+
+[FORMAT]
+# Match Black formatting
+max-line-length=100
