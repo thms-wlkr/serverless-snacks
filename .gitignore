@@ -19,3 +19,4 @@ htmlcov/
 
 # AWS CLI responses (from manual testing)
 response.json
+response*.json

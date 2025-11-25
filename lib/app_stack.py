@@ -50,6 +50,8 @@ class AppStack(Stack):
             environment={
                 "TABLE_NAME": orders_table.table_name,
                 "EVENT_BUS_NAME": event_bus.event_bus_name,
+                "POWERTOOLS_SERVICE_NAME": "serverless-snacks",
+                "POWERTOOLS_METRICS_NAMESPACE": "ServerlessSnacks",
             },
             timeout=Duration.seconds(15),
             memory_size=256,
@@ -67,6 +69,8 @@ class AppStack(Stack):
             handler_path="src/lambdas/process_order",
             environment={
                 "TABLE_NAME": orders_table.table_name,
+                "POWERTOOLS_SERVICE_NAME": "serverless-snacks",
+                "POWERTOOLS_METRICS_NAMESPACE": "ServerlessSnacks",
             },
             timeout=Duration.seconds(60),
             memory_size=512,

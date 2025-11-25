@@ -43,7 +43,17 @@ class PythonFunction(lambda_.Function):
             construct_id,
             runtime=lambda_.Runtime.PYTHON_3_12,
             handler="handler.lambda_handler",
-            code=lambda_.Code.from_asset(handler_path),
+            code=lambda_.Code.from_asset(
+                handler_path,
+                bundling={
+                    "image": lambda_.Runtime.PYTHON_3_12.bundling_image,
+                    "command": [
+                        "bash",
+                        "-c",
+                        "pip install -r requirements.txt -t /asset-output && cp -au . /asset-output",
+                    ],
+                },
+            ),
             timeout=timeout or Duration.seconds(30),
             memory_size=memory_size or 256,
             environment=environment or {},
