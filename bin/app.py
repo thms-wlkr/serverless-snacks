@@ -12,12 +12,21 @@ env = cdk.Environment(
     region=os.getenv("CDK_DEFAULT_REGION", "eu-west-1")
 )
 
+# Common tags for all resources
+common_tags = {
+    "Project": "ServerlessSnacks",
+    "Environment": "Demo",
+    "Owner": "TechnicalAssessment",
+    "CostCenter": "Engineering",
+}
+
 # DataStack: Stateful resources (DynamoDB)
 # This stack persists even when redeploying application code
 data_stack = DataStack(
     app,
     "ServerlessSnacks-DataStack",
     env=env,
+    tags=common_tags,
 )
 
 # AppStack: Stateless resources (Lambdas, EventBridge)
@@ -28,6 +37,7 @@ app_stack = AppStack(
     orders_table=data_stack.orders_table,
     encryption_key=data_stack.encryption_key,
     env=env,
+    tags=common_tags,
 )
 
 app.synth()
