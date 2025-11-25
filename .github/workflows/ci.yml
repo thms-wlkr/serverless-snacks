@@ -47,6 +47,12 @@ jobs:
           source .venv/bin/activate
           cdk synth
 
+      - name: Upload CDK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cdk-out
+          path: cdk.out/
+
   # Production Enhancement: CDK Diff on PRs
   # Commented out as it requires AWS credentials configured in GitHub Secrets
   # Uncomment and add AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY to enable
