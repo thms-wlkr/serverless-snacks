@@ -1,0 +1,94 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test and Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          npm install -g aws-cdk
+
+      - name: Lint with pylint
+        run: |
+          source .venv/bin/activate
+          pylint lib/ src/
+
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          pytest tests/ -v --cov=lib --cov=src --cov-report=term
+
+      - name: CDK Synth
+        run: |
+          source .venv/bin/activate
+          cdk synth
+
+  # Production Enhancement: CDK Diff on PRs
+  # Commented out as it requires AWS credentials configured in GitHub Secrets
+  # Uncomment and add AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY to enable
+  #
+  # cdk-diff:
+  #   name: CDK Diff (PR only)
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'pull_request'
+  #   permissions:
+  #     pull-requests: write
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.12'
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '24'
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m venv .venv
+  #         source .venv/bin/activate
+  #         pip install -r requirements.txt
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: eu-west-1
+  #     - name: CDK Diff
+  #       run: |
+  #         source .venv/bin/activate
+  #         cdk diff
+
+  # Production Enhancement: Deployment
+  # In a production environment, would add a deploy job that:
+  # - Runs only on merge to main (not PRs)
+  # - Uses AWS credentials from GitHub Secrets (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+  # - Executes: cdk deploy --all --require-approval never
+  # - Could use AWS OIDC for keyless authentication
+  # - Environments managed via CDK context (cdk.json) or CLI parameters
+  #   Example: cdk deploy -c environment=dev or -c environment=prod
+  # - Different stack names, resource configs per environment

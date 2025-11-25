@@ -1,0 +1,9 @@
+# Development dependencies
+# These are only needed for local development and testing (not deployed to AWS)
+
+-r requirements.txt       # Include all production dependencies
+pytest>=8.0.0            # Testing framework
+pytest-cov>=4.1.0        # Coverage reports
+pytest-mock>=3.12.0      # Mocking utilities
+moto>=5.0.0              # Mock AWS services for integration tests
+pylint>=3.0.0            # Code linter for quality checks

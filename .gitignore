@@ -1,0 +1,22 @@
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+
+# Virtual Environment
+.venv/
+
+# CDK
+cdk.out/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+
+# AWS CLI responses (from manual testing)
+response.json
+response*.json
