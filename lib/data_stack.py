@@ -1,3 +1,4 @@
+"""Data stack for Serverless Snacks application."""
 from aws_cdk import (
     Stack,
     RemovalPolicy,
@@ -9,6 +10,7 @@ from constructs import Construct
 
 
 class DataStack(Stack):
+    """Stateful resources: DynamoDB table with KMS encryption."""
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)

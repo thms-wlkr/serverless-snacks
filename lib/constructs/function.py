@@ -14,9 +14,7 @@ from constructs import Construct
 
 
 class PythonFunction(lambda_.Function):
-    """
-    Custom Lambda function construct with defaults.
-    """
+    """Reusable Lambda construct with Python 3.12 runtime and dependency bundling."""
 
     def __init__(
         self,
@@ -50,7 +48,10 @@ class PythonFunction(lambda_.Function):
                     "command": [
                         "bash",
                         "-c",
-                        "pip install -r requirements.txt -t /asset-output && cp -au . /asset-output",
+                        (
+                            "pip install -r requirements.txt -t /asset-output && "
+                            "cp -au . /asset-output"
+                        ),
                     ],
                 },
             ),

@@ -1,3 +1,4 @@
+"""Application stack for Serverless Snacks."""
 from aws_cdk import (
     Stack,
     CfnOutput,
@@ -14,6 +15,7 @@ from lib.constructs.function import PythonFunction
 
 
 class AppStack(Stack):
+    """Stateless resources: Lambda functions, EventBridge, and SQS."""
 
     def __init__(
         self,
@@ -151,6 +153,6 @@ class AppStack(Stack):
 
         # In a production environment, would add CloudWatch Alarms for:
         # - DLQ message count
-        # - Lambda error rates 
+        # - Lambda error rates
         # - Lambda throttles
         # - DynamoDB throttles
