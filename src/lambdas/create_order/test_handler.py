@@ -1,19 +1,12 @@
+"""Unit tests for create_order Lambda handler."""
 import json
 import os
-import pytest
+
 import boto3
+import pytest
 from moto import mock_aws
-from decimal import Decimal
-from dataclasses import dataclass
 
-
-@dataclass
-class LambdaContext:
-    """Mock Lambda context for testing"""
-    function_name: str = "test-function"
-    memory_limit_in_mb: int = 128
-    invoked_function_arn: str = "arn:aws:lambda:us-east-1:123456789012:function:test"
-    aws_request_id: str = "test-request-id"
+from tests.conftest import LambdaContext
 
 
 # Pytest fixtures run before each test that uses them (similar to beforeEach in TypeScript)
@@ -52,7 +45,7 @@ def aws_environment():
 
 def test_create_order_success(aws_environment):
     """Test creating an order successfully"""
-    from src.lambdas.create_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     event = {
         "customerName": "Thomas Walker",
@@ -81,7 +74,7 @@ def test_create_order_success(aws_environment):
 
 def test_create_order_missing_customer_name(aws_environment):
     """Test creating an order with missing customer name"""
-    from src.lambdas.create_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     event = {
         "snackItems": [
@@ -98,7 +91,7 @@ def test_create_order_missing_customer_name(aws_environment):
 
 def test_create_order_missing_snack_items(aws_environment):
     """Test creating an order with missing snack items"""
-    from src.lambdas.create_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     event = {"customerName": "Thomas Walker"}
 
@@ -111,7 +104,7 @@ def test_create_order_missing_snack_items(aws_environment):
 
 def test_create_order_calculates_total_correctly(aws_environment):
     """Test that order total is calculated correctly"""
-    from src.lambdas.create_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     event = {
         "customerName": "Ollie McCaffery",
@@ -131,8 +124,7 @@ def test_create_order_calculates_total_correctly(aws_environment):
 
 def test_create_order_publishes_event(aws_environment):
     """Test that creating an order publishes an event to EventBridge"""
-    from src.lambdas.create_order.handler import lambda_handler
-    from unittest.mock import patch
+    from .handler import lambda_handler
 
     event = {
         "customerName": "Event Test",

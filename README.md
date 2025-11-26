@@ -51,16 +51,35 @@ cdk destroy --all
 
 ## Testing
 
-```bash
-# Run tests
-make test          # All tests
-make test-unit     # Unit tests only
-make test-cov      # With coverage
+### Unit Tests
 
-# Or use pytest directly
-pytest tests/ -v
+Test CDK infrastructure and Lambda handlers with mocked AWS services:
+
+```bash
+# Run unit tests
 pytest tests/unit/ -v
-pytest tests/ --cov=lib --cov=src
+pytest src/ -v  # Lambda handler tests
+
+# With coverage
+pytest tests/unit/ src/ --cov=lib --cov=src --cov-report=term
+```
+
+### Integration Tests
+
+Test deployed infrastructure end-to-end (requires deployment):
+
+```bash
+# Deploy first
+cdk deploy --all
+
+# Run integration tests against deployed resources
+pytest tests/integration/ -v
+
+# These tests verify:
+# - CreateOrder Lambda creates orders in DynamoDB
+# - EventBridge publishes events to SQS
+# - ProcessOrder Lambda processes orders
+# - Full flow from NEW to PROCESSED status
 ```
 
 ## Deployment

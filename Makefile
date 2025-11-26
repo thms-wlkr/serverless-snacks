@@ -1,4 +1,4 @@
-.PHONY: install test synth deploy destroy clean
+.PHONY: install test test-unit test-integration synth deploy destroy clean
 
 # Activate virtual environment for all commands
 VENV = .venv/bin/activate
@@ -8,7 +8,13 @@ install:
 	. $(VENV) && pip install -r requirements-dev.txt
 
 test:
-	. $(VENV) && pytest tests/ -v
+	. $(VENV) && pytest tests/unit/ src/ tests/integration/ -v
+
+test-unit:
+	. $(VENV) && pytest tests/unit/ src/ -v
+
+test-integration:
+	. $(VENV) && pytest tests/integration/ -v
 
 synth:
 	. $(VENV) && cdk synth

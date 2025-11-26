@@ -37,10 +37,17 @@ jobs:
           source .venv/bin/activate
           pylint lib/ src/
 
-      - name: Run tests
+      - name: Run unit tests
         run: |
           source .venv/bin/activate
-          pytest tests/ -v --cov=lib --cov=src --cov-report=term
+          pytest tests/unit/ src/ -v --cov=lib --cov=src --cov-report=term
+
+      # Integration tests would be added in a separate job that:
+      # - Runs only on merge to main (post-deployment)
+      # - Runs: pytest tests/integration/ -v
+      # - Uses AWS credentials from GitHub Secrets
+      # - Or deploys to a test environment
+      # - Tears down test environment after completion
 
       - name: CDK Synth
         run: |
