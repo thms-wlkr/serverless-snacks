@@ -47,7 +47,7 @@ def aws_environment():
 
 def test_process_order_success(aws_environment):
     """Test processing an order successfully"""
-    from src.lambdas.process_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     # First, create an order in DynamoDB
     table = aws_environment["table"]
@@ -94,7 +94,7 @@ def test_process_order_success(aws_environment):
 
 def test_process_order_idempotent(aws_environment):
     """Test that processing an already processed order is idempotent"""
-    from src.lambdas.process_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     # Create an order that's already processed
     table = aws_environment["table"]
@@ -136,7 +136,7 @@ def test_process_order_idempotent(aws_environment):
 
 def test_process_order_not_found(aws_environment):
     """Test processing an order that doesn't exist"""
-    from src.lambdas.process_order.handler import lambda_handler
+    from .handler import lambda_handler
     from aws_lambda_powertools.utilities.batch.exceptions import BatchProcessingError
 
     event = {
@@ -166,7 +166,7 @@ def test_process_order_not_found(aws_environment):
 
 def test_process_order_updates_status_only(aws_environment):
     """Test that processing only updates status and processedAt, not other fields"""
-    from src.lambdas.process_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     table = aws_environment["table"]
     order_id = "test-order-789"

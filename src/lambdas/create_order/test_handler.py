@@ -52,7 +52,7 @@ def aws_environment():
 
 def test_create_order_success(aws_environment):
     """Test creating an order successfully"""
-    from src.lambdas.create_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     event = {
         "customerName": "Thomas Walker",
@@ -81,7 +81,7 @@ def test_create_order_success(aws_environment):
 
 def test_create_order_missing_customer_name(aws_environment):
     """Test creating an order with missing customer name"""
-    from src.lambdas.create_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     event = {
         "snackItems": [
@@ -98,7 +98,7 @@ def test_create_order_missing_customer_name(aws_environment):
 
 def test_create_order_missing_snack_items(aws_environment):
     """Test creating an order with missing snack items"""
-    from src.lambdas.create_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     event = {"customerName": "Thomas Walker"}
 
@@ -111,7 +111,7 @@ def test_create_order_missing_snack_items(aws_environment):
 
 def test_create_order_calculates_total_correctly(aws_environment):
     """Test that order total is calculated correctly"""
-    from src.lambdas.create_order.handler import lambda_handler
+    from .handler import lambda_handler
 
     event = {
         "customerName": "Ollie McCaffery",
@@ -131,7 +131,7 @@ def test_create_order_calculates_total_correctly(aws_environment):
 
 def test_create_order_publishes_event(aws_environment):
     """Test that creating an order publishes an event to EventBridge"""
-    from src.lambdas.create_order.handler import lambda_handler
+    from .handler import lambda_handler
     from unittest.mock import patch
 
     event = {
