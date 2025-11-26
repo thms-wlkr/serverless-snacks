@@ -1,20 +1,14 @@
+"""Unit tests for process_order Lambda handler."""
 import json
 import os
-import pytest
-import boto3
-from moto import mock_aws
 from datetime import datetime, UTC
 from decimal import Decimal
-from dataclasses import dataclass
 
+import boto3
+import pytest
+from moto import mock_aws
 
-@dataclass
-class LambdaContext:
-    """Mock Lambda context for testing"""
-    function_name: str = "test-function"
-    memory_limit_in_mb: int = 128
-    invoked_function_arn: str = "arn:aws:lambda:us-east-1:123456789012:function:test"
-    aws_request_id: str = "test-request-id"
+from tests.conftest import LambdaContext
 
 
 # Pytest fixtures run before each test that uses them (similar to beforeEach in TypeScript)
